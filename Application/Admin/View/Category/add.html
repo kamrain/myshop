@@ -1,0 +1,29 @@
+<layout name="layout" />
+<div class="main-div">
+    <form action="__SELF__" method="post" name="theForm">
+        <table width="100%" id="general-table">
+            <tr>
+                <td class="label">分类名称:</td>
+                <td>
+                    <input type='text' name='cat_name' maxlength="20" value='' size='27' /> <font color="red">*</font>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">上级分类:</td>
+                <td>
+                    <select name="parent_id">
+                        <option value="0">顶级分类</option>
+                        <?php foreach ($data as $k => $v) { ?>
+                        <option  value="<?php echo $v['id']; ?>" ><?php echo str_repeat('-', $v['level']*8).$v['cat_name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div class="button-div">
+            <input type="submit" value=" 确定 " />
+            <input type="reset" value=" 重置 " />
+        </div>
+    </form>
+</div>
+

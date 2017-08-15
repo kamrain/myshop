@@ -1,0 +1,22 @@
+<layout name="layout" />
+<form method="post" action="" name="listForm">
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+                <th>分类名称</th>
+                <th>操作</th>
+            </tr>
+            <?php foreach($data as $k=>$v){ ?>
+            <tr align="center" class="tron">
+                <td align="left">
+                    <?php echo str_repeat('-', $v['level']*8).$v['cat_name'] ?>
+                </td> 
+                <td align="center">
+                    <a href="<?php echo U('edit?id='.$v['id']) ?>">修改</a>
+                    <a href="<?php echo U('delete?id='.$v['id']) ?>" onclick="return confirm('确定删除吗？')">删除</a>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
+    </div>
+</form>

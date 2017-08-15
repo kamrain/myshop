@@ -1,0 +1,127 @@
+<layout name="layout" />
+<style>
+    #page-table a{padding: 5px;border: 1px solid #F00;margin: 5px}
+    #page-table span.current{padding: 5px;background: #F00;margin: 5px;color:#FFF;font-weight: bold;}
+</style>
+        <!-- 搜索 -->
+<div class="form-div">
+    <form action="__ACTION__" name="searchForm">
+        <img src="__ROOT__/Public/Admin/Images/icon_search.gif" width="26" height="22" border="0" alt="search" />
+        <p>
+            品　　牌：
+            <?php buildSelect('brand','brand_id','id','brand_name',I('get.brand_id')) ?>
+        </p>
+        <p>
+            商品名称：
+            <input value="<?php echo I('get.gn'); ?>" type="text" name="gn" size="60" />
+        </p>
+        <p>
+            价　　格：
+            从<input value="<?php echo I('get.fp'); ?>" type="text" name="fp" size="8" />
+            到<input value="<?php echo I('get.tp'); ?>" type="text" name="tp" size="8" />
+        </p>
+        <p>
+            是否上架：
+            <?php $ios = I('get.ios'); ?>
+            <input type="radio" name="ios" value="" <?php if($ios == '') echo 'checked="checked"'; ?> />全部
+            <input type="radio" name="ios" value="是" <?php if($ios == '是') echo 'checked="checked"'; ?> />上架
+            <input type="radio" name="ios" value="否" <?php if($ios == '否') echo 'checked="checked"'; ?> />下架
+        </p>
+        <p>
+            添加时间：
+            从<input type="text" name="fa" id="fa" value="<?php echo I('get.fa'); ?>" size="20" />
+            到<input type="text" name="ta" id="ta" value="<?php echo I('get.ta'); ?>" size="20" />
+        </p>
+        <p>
+            排序方式：
+            <?php $odby = I('get.odby','id_desc'); ?>
+            <input onclick="this.parentNode.parentNode.submit()" type="radio" name="odby" value="id_desc" <?php if($odby == 'id_desc') echo   'checked="checked"'; ?> /> 以添加时间降序
+            <input onclick="this.parentNode.parentNode.submit()" type="radio" name="odby" value="id_asc" <?php if($odby == 'id_asc') echo     'checked="checked"'; ?> /> 以添加时间升序
+            <input onclick="this.parentNode.parentNode.submit()" type="radio" name="odby" value="price_desc" <?php if($odby == 'price_desc') echo 'checked="checked"'; ?> /> 以价格降序
+            <input onclick="this.parentNode.parentNode.submit()" type="radio" name="odby" value="price_asc" <?php if($odby == 'price_asc') echo 'checked="checked"'; ?> /> 以价格升序
+        </p>
+        <p>
+            <input type="submit" value="搜索" />
+        </p>
+        
+    </form>
+</div>
+
+<!-- 商品列表 -->
+<form method="post" action="" name="listForm" onsubmit="">
+    <div class="list-div" id="listDiv">
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+                <th>编号</th>
+                <th>品牌</th>
+                <th>商品名称</th>
+                <th>商品图片</th>
+                <th>市场价格</th>
+                <th>本店价格</th>
+                <th>是否上架</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="list" item="val">
+            <tr class="tron">
+                <td align="center"><{$val.id}></td>
+                <td align="center">{$val.brand_name}</td>
+                <td align="center" width="200">
+                    <span onclick=""><{$val.goods_name}></span>
+                </td>
+                <td align="center">
+                    <img src="__ROOT__/Public/Uploads/{$val.sm_logo}" alt="" />
+                </td>
+                <td align="center">
+                    <span onclick=""><{$val.market_price}></span>
+                </td>
+                <td align="center">
+                    <span onclick=""><{$val.shop_price}></span>
+                </td>
+                <td align="center">
+                    <span onclick=""><{$val.is_on_sale}></span>
+                </td>
+                <td align="center">
+                    <span onclick=""><{$val.addtime}></span>
+                </td> 
+                <td align="center">
+                    <a href="__APP__/Admin/Goods/edit/id/{$val.id}.html">修改</a>
+                    <a onclick="return confirm('确定删除吗？')" href="__APP__/Admin/Goods/delete/id/{$val.id}.html">删除</a>
+                </td>  
+            </tr>
+            </foreach>
+        </table>
+
+    <!-- 分页开始 -->
+        <table id="page-table" cellspacing="0">
+            <tr>
+                <td width="80%">&nbsp;</td>
+                <td align="center" nowrap="true">
+                    {$showPage}
+                </td>
+            </tr>
+        </table>
+    <!-- 分页结束 -->
+    </div>
+</form>
+
+
+
+<!-- 引入JQ -->
+<script type="text/javascript" src="__PUBLIC__/umeditor1_2_2-utf8-php/third-party/jquery.min.js"></script>
+
+<!-- 时间插件 -->
+<link href="__PUBLIC__/datetimepicker/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/datetimepicker/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/datetimepicker/datepicker-zh_cn.js"></script>
+<link rel="stylesheet" media="all" type="text/css" href="__PUBLIC__/datetimepicker/time/jquery-ui-timepicker-addon.min.css" />
+<script type="text/javascript" src="__PUBLIC__/datetimepicker/time/jquery-ui-timepicker-addon.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/datetimepicker/time/i18n/jquery-ui-timepicker-addon-i18n.min.js"></script>
+<script>
+    $.timepicker.setDefaults($.timepicker.regional['zh-CN']);//设置中文
+    $("#fa").datetimepicker();  //调用
+    $("#ta").datetimepicker();
+</script>
+
+<!-- 引入高亮显示 -->
+<script type="text/javascript" src="__PUBLIC__/Admin/Js/tron.js"></script>
